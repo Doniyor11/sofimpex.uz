@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useLanguageStore } from "@/lib/hooks/use-translations"
 
 // Sample partner data with real company logos
 const partners = [
@@ -59,8 +58,6 @@ export default function PartnersSection() {
   const [touchEnd, setTouchEnd] = useState(0)
   const [autoplayPaused, setAutoplayPaused] = useState(false)
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null)
-
-  const { t } = useLanguageStore()
 
   // Adjust number of slides based on screen width
   useEffect(() => {
@@ -148,9 +145,11 @@ export default function PartnersSection() {
   return (
     <div className="container mx-auto px-4">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-2">{t("partners_title")}</h2>
+        <h2 className="text-3xl font-bold mb-2">Наши партнеры</h2>
         <div className="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
-        <p className="text-gray-600 max-w-2xl mx-auto">{t("partners_description")}</p>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Мы гордимся сотрудничеством с ведущими компаниями в сфере логистики и международных перевозок
+        </p>
       </div>
 
       <div className="relative max-w-5xl mx-auto px-8">

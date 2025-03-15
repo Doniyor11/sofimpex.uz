@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { AlertCircle, Loader2, Package, User } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Card, CardContent } from "@/components/ui/card"
-import { useLanguageStore } from "@/lib/hooks/use-translations"
+import { Badge } from "@/components/ui/badge"
 
 interface Status {
   Name: string
@@ -24,18 +24,17 @@ interface TrackingResult {
   Statuses: Status[]
 }
 
+// Define all possible statuses in order
+const TRACKING_STATUSES = [
+  { id: "packaging", name: "На упаковке" },
+  { id: "sent", name: "Посылка отправлено" },
+  { id: "customs", name: "Таможенном оформлении" },
+  { id: "warehouse", name: "На складе" },
+  { id: "delivery", name: "На доставке" },
+  { id: "delivered", name: "Доставлено" },
+]
+
 export default function TrackingForm() {
-  const { t } = useLanguageStore()
-
-  const TRACKING_STATUSES = [
-    { id: "packaging", name: t("status_packaging") },
-    { id: "sent", name: t("status_sent") },
-    { id: "customs", name: t("status_customs") },
-    { id: "warehouse", name: t("status_warehouse") },
-    { id: "delivery", name: t("status_delivery") },
-    { id: "delivered", name: t("status_delivered") },
-  ]
-
   const [trackingNumber, setTrackingNumber] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -125,7 +124,7 @@ export default function TrackingForm() {
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <Input
           type="text"
-          placeholder={t("enter_tracking")}
+          placeholder="Введите номер отслеживания"
           value={trackingNumber}
           onChange={(e) => setTrackingNumber(e.target.value)}
           className="flex-grow"
@@ -134,10 +133,10 @@ export default function TrackingForm() {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {t("loading")}
+              Загрузка
             </>
           ) : (
-            t("track")
+            "Отследить"
           )}
         </Button>
       </form>
@@ -152,6 +151,7 @@ export default function TrackingForm() {
       {trackingResult && (
         <div className="mt-8">
           <Card className="border-0 shadow-lg overflow-hidden">
+           
             <CardContent className="p-6">
               {/* Package info cards remain the same */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -160,15 +160,15 @@ export default function TrackingForm() {
                     <div className="bg-blue-100 p-2 rounded-full">
                       <Package className="h-5 w-5 text-blue-600" />
                     </div>
-                    <h4 className="font-medium">{t("information")}</h4>
+                    <h4 className="font-medium">Информация</h4>
                   </div>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-500">{t("weight")}:</span>
+                      <span className="text-gray-500">Вес:</span>
                       <span className="font-medium">{trackingResult.weight} кг</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">{t("cost")}:</span>
+                      <span className="text-gray-500">Стоимость:</span>
                       <span className="font-medium">{trackingResult.cost.toLocaleString()} сум</span>
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export default function TrackingForm() {
 
               {/* Updated Status Timeline */}
               <div className="mb-6">
-                <h4 className="font-medium text-lg mb-8 text-center">{t("delivery_status")}</h4>
+                <h4 className="font-medium text-lg mb-8 text-center">Статус доставки</h4>
 
                 <div className="relative max-w-md mx-auto">
                   {/* Vertical line */}
@@ -241,6 +241,7 @@ export default function TrackingForm() {
                   </div>
                 </div>
               </div>
+
             </CardContent>
           </Card>
         </div>
