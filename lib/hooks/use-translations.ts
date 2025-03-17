@@ -15,7 +15,11 @@ export const useLanguageStore = create<LanguageStore>((set, get) => ({
   language: "ru", // Default to Russian initially
   setLanguage: (lang: string) => {
     if (typeof window !== "undefined") {
+      // Store in localStorage
       localStorage.setItem("selectedLanguage", lang)
+
+      // Also store in a cookie for server-side access
+      document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`
     }
     set({ language: lang })
   },
