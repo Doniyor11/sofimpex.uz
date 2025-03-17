@@ -29,6 +29,7 @@ export default function Icon() {
         overflow: "hidden",
       }}
     >
+
       <img
         src={favicon.src}
         alt="Sofimpex Kargo Logo"
