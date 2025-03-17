@@ -1,17 +1,16 @@
+"use client"
+
 import ContactForm from "@/components/contact-form"
 import TrackingForm from "@/components/tracking-form"
 import ServicesSection from "@/components/services-section"
 import AboutSection from "@/components/about-section"
 import PartnersSection from "@/components/partners-section"
 import Image from "next/image"
-import type { Metadata } from "next"
-
-export const metadata: Metadata = {
-  title: "Sofimpex ",
-  description: "Contact our cargo and logistics services for reliable shipping solutions",
-}
+import { useLanguageStore } from "@/lib/hooks/use-translations"
 
 export default function Home() {
+  const { t } = useLanguageStore()
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -32,12 +31,8 @@ export default function Home() {
         {/* Content */}
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl py-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-8">Ваш надежный курьерский партнер</h1>
-            <p className="text-xl opacity-90 leading-relaxed">
-              Мы - динамично развивающаяся компания, предоставляющая профессиональные услуги в сфере грузоперевозок,
-              туризма и консалтинга. Наша цель - предложить надежные решения, ориентированные на потребности наших
-              клиентов.
-            </p>
+            <h1 className="text-4xl md:text-5xl font-bold mb-8">{t("hero_title")}</h1>
+            <p className="text-xl opacity-90 leading-relaxed">{t("hero_description")}</p>
           </div>
         </div>
       </section>
@@ -46,16 +41,21 @@ export default function Home() {
       <section id="tracking" className="py-16 bg-gray-50 scroll-mt-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-2">
-            Отслеживайте свою <span className="text-orange-500">посылка</span>
+            {t("tracking_title")
+              .split(" ")
+              .map((word, i, arr) =>
+                i === arr.length - 1 ? (
+                  <span key={i} className="text-orange-500">
+                    {word}
+                  </span>
+                ) : (
+                  <span key={i}>{word} </span>
+                ),
+              )}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Отслеживайте статус и местоположение вашей посылки в режиме реального времени. Введите номер отслеживания и
-            получите актуальную информацию о местонахождении вашего груза.
-          </p>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8">{t("tracking_description")}</p>
           <TrackingForm />
-          <p className="text-sm text-gray-500 mt-4">
-            Для получения дополнительной информации о вашей посылке, пожалуйста, свяжитесь с нашей службой поддержки.
-          </p>
+          <p className="text-sm text-gray-500 mt-4">{t("tracking_support")}</p>
         </div>
       </section>
 
@@ -74,10 +74,8 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold mb-2">Свяжитесь с нами</h2>
-              <p className="text-gray-600">
-                Заполните форму ниже, и наши специалисты свяжутся с вами в ближайшее время
-              </p>
+              <h2 className="text-3xl font-bold mb-2">{t("contact_title")}</h2>
+              <p className="text-gray-600">{t("contact_description")}</p>
             </div>
             <ContactForm />
           </div>

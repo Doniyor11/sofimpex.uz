@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label"
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
+// Add the import at the top
+import { useLanguageStore } from "@/lib/hooks/use-translations"
+
 type FormData = {
   name: string
   email: string
@@ -18,27 +21,30 @@ type FormData = {
   language: string
 }
 
-const initialFormData: FormData = {
-  name: "",
-  email: "",
-  phone: "",
-  message: "",
-  language: "ru", // Default language
-}
-
 export default function ContactForm() {
+  // Update the component to use translations
+  // Add this inside the component function at the top:
+  const { t, language } = useLanguageStore()
+
+  // Update the initialFormData to use the current language:
+  const initialFormData: FormData = {
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+    language: language, // Use the current language from the store
+  }
+
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Get current language from localStorage if available
+  // Replace the useEffect that gets language from localStorage with:
+  // Update language in form data when language changes
   useEffect(() => {
-    const storedLanguage = localStorage.getItem("selectedLanguage")
-    if (storedLanguage) {
-      setFormData((prev) => ({ ...prev, language: storedLanguage }))
-    }
-  }, [])
+    setFormData((prev) => ({ ...prev, language }))
+  }, [language])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -77,22 +83,23 @@ export default function ContactForm() {
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6">
       {isSuccess ? (
+        // Replace all text content in the JSX with translations
+        // For example:
         <div className="text-center py-8">
           <CheckCircle2 className="mx-auto h-12 w-12 text-green-500 mb-4" />
-          <h3 className="text-xl font-bold mb-2">Сообщение отправлено!</h3>
-          <p className="text-gray-600 mb-6">
-            Спасибо за обращение. Наши специалисты свяжутся с вами в ближайшее время.
-          </p>
+          <h3 className="text-xl font-bold mb-2">{t("success_title")}</h3>
+          <p className="text-gray-600 mb-6">{t("success_description")}</p>
           <Button onClick={() => setIsSuccess(false)} variant="outline">
-            Отправить еще сообщение
+            {t("send_another")}
           </Button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
+              {/* And for form labels: */}
               <Label htmlFor="name">
-                Ваше имя <span className="text-red-500">*</span>
+                {t("name")} <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="name"
@@ -100,7 +107,7 @@ export default function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                placeholder="Введите ваше имя"
+                placeholder={t("name_placeholder")}
               />
             </div>
 
@@ -115,19 +122,25 @@ export default function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                placeholder="Введите ваш email"
+                placeholder={t("email_placeholder")}
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Телефон</Label>
-            <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} />
+            <Label htmlFor="phone">{t("phone")}</Label>
+            <Input
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder={t("phone_placeholder")}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="message">
-              Сообщение <span className="text-red-500">*</span>
+              {t("message")} <span className="text-red-500">*</span>
             </Label>
             <Textarea
               id="message"
@@ -135,7 +148,7 @@ export default function ContactForm() {
               value={formData.message}
               onChange={handleChange}
               required
-              placeholder="Введите ваше сообщение"
+              placeholder={t("message_placeholder")}
               className="min-h-[120px]"
             />
           </div>
@@ -147,6 +160,7 @@ export default function ContactForm() {
             </Alert>
           )}
 
+          {/* And for buttons: */}
           <Button
             type="submit"
             disabled={isLoading}
@@ -155,10 +169,10 @@ export default function ContactForm() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Отправка...
+                {t("sending")}
               </>
             ) : (
-              "Отправить сообщение"
+              t("send_message")
             )}
           </Button>
         </form>

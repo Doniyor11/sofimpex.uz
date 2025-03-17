@@ -1,41 +1,42 @@
 import Image from "next/image"
-
-const services = [
-  {
-    id: "cargo",
-    title: "Грузоперевозки",
-    description: "Надежная и быстрая доставка грузов по всему миру с полным отслеживанием.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2340&auto=format&fit=crop",
-  },
-  {
-    id: "customs",
-    title: "Таможенное оформление",
-    description: "Профессиональное оформление всех необходимых таможенных документов.",
-    image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?q=80&w=2069&auto=format&fit=crop",
-  },
-  {
-    id: "tours",
-    title: "Туры",
-    description: "Организация туристических поездок и экскурсий для частных лиц и групп.",
-    image: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?q=80&w=2070&auto=format&fit=crop",
-  },
-  {
-    id: "business",
-    title: "Бизнес-услуги",
-    description: "Комплексные решения для бизнеса, включая консалтинг и логистику.",
-    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop",
-  },
-]
+import { useLanguageStore } from "@/lib/hooks/use-translations"
 
 export default function ServicesSection() {
+  const { t } = useLanguageStore()
+
+  const services = [
+    {
+      id: "cargo",
+      title: t("cargo_title"),
+      description: t("cargo_description"),
+      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2340&auto=format&fit=crop",
+    },
+    {
+      id: "customs",
+      title: t("customs_title"),
+      description: t("customs_description"),
+      image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?q=80&w=2069&auto=format&fit=crop",
+    },
+    {
+      id: "tours",
+      title: t("tours_title"),
+      description: t("tours_description"),
+      image: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?q=80&w=2070&auto=format&fit=crop",
+    },
+    {
+      id: "business",
+      title: t("business_title"),
+      description: t("business_description"),
+      image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop",
+    },
+  ]
+
   return (
     <div className="container mx-auto px-4">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-2">Наши услуги</h2>
+        <h2 className="text-3xl font-bold mb-2">{t("services_title")}</h2>
         <div className="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Мы предлагаем широкий спектр профессиональных услуг для частных лиц и бизнеса
-        </p>
+        <p className="text-gray-600 max-w-2xl mx-auto">{t("services_description")}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
